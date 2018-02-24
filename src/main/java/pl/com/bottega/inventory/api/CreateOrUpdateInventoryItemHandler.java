@@ -23,14 +23,22 @@ public class CreateOrUpdateInventoryItemHandler implements Handler<CreateOrUpdat
 	public Void handle(CreateOrUpdateInventoryItemCommand command) {
 		Optional<InventoryItem> inventoryItem = inventoryItemRepository.findBySkuCode(command.getSkuCode());
 		if (isPresentInRepository(inventoryItem)) {
-			InventoryItem existingInventoryItem = inventoryItem.get();
-			existingInventoryItem.increaseStock(command.getAmount());
-			inventoryItemRepository.save(existingInventoryItem);
+			updateExistingInventoryItem(command, inventoryItem);
 		} else {
-			InventoryItem newInventoryItem = new InventoryItem(command);
-			inventoryItemRepository.save(newInventoryItem);
+			createNewInventoryItem(command);
 		}
 		return null;
+	}
+
+	private void createNewInventoryItem(CreateOrUpdateInventoryItemCommand command) {
+		InventoryItem newInventoryItem = new InventoryItem(command);
+		inventoryItemRepository.save(newInventoryItem);
+	}
+
+	private void updateExistingInventoryItem(CreateOrUpdateInventoryItemCommand command, Optional<InventoryItem> inventoryItem) {
+		InventoryItem existingInventoryItem = inventoryItem.get();
+		existingInventoryItem.increaseStock(command.getAmount());
+		inventoryItemRepository.save(existingInventoryItem);
 	}
 
 	@Override
