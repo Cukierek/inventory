@@ -142,7 +142,7 @@ public class InventoryApplicationTests {
         andExpect(jsonPath("$.success").value(false));
 
     purchase(
-        entry("Pants", 5),
+        entry("Pants", 6),
         entry("Trousers", 10)
     ).
         andExpect(status().isOk()).

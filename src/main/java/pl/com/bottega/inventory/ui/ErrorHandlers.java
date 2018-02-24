@@ -10,18 +10,16 @@ import pl.com.bottega.inventory.domain.commands.Validatable;
 
 @ControllerAdvice
 public class ErrorHandlers {
+	private static final String APPLICATION_JSON = "application/json";
 
-  private static final String APPLICATION_JSON = "application/json";
-
-  @ExceptionHandler(InvalidCommandException.class)
-  public ResponseEntity<Validatable.ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
-    return new ResponseEntity<>(
-        ex.getErrors(),
-        headers,
-        HttpStatus.UNPROCESSABLE_ENTITY
-    );
-  }
-
+	@ExceptionHandler(InvalidCommandException.class)
+	public ResponseEntity<Validatable.ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		return new ResponseEntity<>(
+				ex.getErrors(),
+				headers,
+				HttpStatus.UNPROCESSABLE_ENTITY
+		);
+	}
 }
